@@ -3,24 +3,19 @@ const commentsToggle = document.getElementById('commentsToggle');
 const sidebarToggle = document.getElementById('sidebarToggle');
 
 const tiktokfeed = document.getElementById('tiktokTogglefeed');
-const tiktokcomments = document.getElementById('tiktokTogglecomments');
-// 1. When popup opens, pull both saved states independently
-const hulufeed = document.getElementById('huluTogglefeed');
 const redditfeed = document.getElementById('redditTogglefeed');
-
+const hulufeed = document.getElementById('huluTogglefeed');
 const igfeed = document.getElementById('instagramTogglefeed');
-
 const xfeed = document.getElementById('xTogglefeed');
-
 const netflixfeed = document.getElementById('netflixTogglefeed');
+
+// 1. When popup opens, pull all saved states independently
 document.addEventListener('DOMContentLoaded', async () => {
-  // Pulls both keys; defaults to false if they don't exist yet
   const settings = await chrome.storage.sync.get({
     feed: false,
     comments: false,
     sidebar: false,
     tiktokfeed: false,
-    tiktokcomments: false,
     redditfeed: false,
     hulufeed: false,
     igfeed: false,
@@ -28,72 +23,77 @@ document.addEventListener('DOMContentLoaded', async () => {
     netflixfeed: false,
   });
 
-  // Set each checkbox to its own saved true/false value
-  feedToggle.checked = settings.feed;
-  commentsToggle.checked = settings.comments;
-  sidebarToggle.checked = settings.sidebar;
-  tiktokfeed.checked = settings.tiktokfeed;
-
-  redditfeed.checked = settings.redditfeed;
-  hulufeed.checked = settings.hulufeed;
-  igfeed.checked = settings.igfeed;
-  xfeed.checked = settings.xfeed;
-  netflixfeed.checked = settings.netflixfeed;
+  // Set each checkbox safely to its saved value
+  if (feedToggle) feedToggle.checked = settings.feed;
+  if (commentsToggle) commentsToggle.checked = settings.comments;
+  if (sidebarToggle) sidebarToggle.checked = settings.sidebar;
+  if (tiktokfeed) tiktokfeed.checked = settings.tiktokfeed;
+  if (redditfeed) redditfeed.checked = settings.redditfeed;
+  if (hulufeed) hulufeed.checked = settings.hulufeed;
+  if (igfeed) igfeed.checked = settings.igfeed;
+  if (xfeed) xfeed.checked = settings.xfeed;
+  if (netflixfeed) netflixfeed.checked = settings.netflixfeed;
 });
 
-// 2. Helper function to handle a toggle change independently
+// 2. Helper function to handle toggle changes
 async function handleToggleChange(settingKey, isChecked) {
-  // Save only the key that changed ('feed' or 'comments')
   await chrome.storage.sync.set({ [settingKey]: isChecked });
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab) return;
+  if (!tab || !tab.id) return;
+  if (tab.url && tab.url.startsWith('chrome://')) return;
 
-  // Notify the content script which specific feature changed
   chrome.tabs.sendMessage(
     tab.id,
     {
       action: 'toggleVisibility',
-      setting: settingKey, // Passes 'feed' or 'comments'
-      value: isChecked, // Passes true or false
+      setting: settingKey,
+      value: isChecked,
     },
     (response) => {
       if (chrome.runtime.lastError) return;
       if (response && response.action === 'Success') {
-        document.getElementById('status').innerText = response.determinant;
+        const statusEl = document.getElementById('status');
+        if (statusEl) statusEl.innerText = response.determinant;
       }
     },
   );
 }
 
-// 3. Attach independent listeners to each checkbox
-feedToggle.addEventListener('change', (e) =>
-  handleToggleChange('feed', e.target.checked),
-);
-commentsToggle.addEventListener('change', (e) =>
-  handleToggleChange('comments', e.target.checked),
-);
-sidebarToggle.addEventListener('change', (e) =>
-  handleToggleChange('sidebar', e.target.checked),
-);
-tiktokfeed.addEventListener('change', (e) =>
-  handleToggleChange('tiktokfeed', e.target.checked),
-);
-
-redditfeed.addEventListener('change', (e) =>
-  handleToggleChange('redditfeed', e.target.checked),
-);
-hulufeed.addEventListener('change', (e) =>
-  handleToggleChange('hulufeed', e.target.checked),
-);
-
-igfeed.addEventListener('change', (e) =>
-  handleToggleChange('igfeed', e.target.checked),
-);
-
-xfeed.addEventListener('change', (e) =>
-  handleToggleChange('xfeed', e.target.checked),
-);
-netflixfeed.addEventListener('change', (e) =>
-  handleToggleChange('netflixfeed', e.target.checked),
-);
+// 3. Attach independent listeners safely
+if (feedToggle)
+  feedToggle.addEventListener('change', (e) =>
+    handleToggleChange('feed', e.target.checked),
+  );
+if (commentsToggle)
+  commentsToggle.addEventListener('change', (e) =>
+    handleToggleChange('comments', e.target.checked),
+  );
+if (sidebarToggle)
+  sidebarToggle.addEventListener('change', (e) =>
+    handleToggleChange('sidebar', e.target.checked),
+  );
+if (tiktokfeed)
+  tiktokfeed.addEventListener('change', (e) =>
+    handleToggleChange('tiktokfeed', e.target.checked),
+  );
+if (redditfeed)
+  redditfeed.addEventListener('change', (e) =>
+    handleToggleChange('redditfeed', e.target.checked),
+  );
+if (hulufeed)
+  hulufeed.addEventListener('change', (e) =>
+    handleToggleChange('hulufeed', e.target.checked),
+  );
+if (igfeed)
+  igfeed.addEventListener('change', (e) =>
+    handleToggleChange('igfeed', e.target.checked),
+  );
+if (xfeed)
+  xfeed.addEventListener('change', (e) =>
+    handleToggleChange('xfeed', e.target.checked),
+  );
+if (netflixfeed)
+  netflixfeed.addEventListener('change', (e) =>
+    handleToggleChange('netflixfeed', e.target.checked),
+  );
