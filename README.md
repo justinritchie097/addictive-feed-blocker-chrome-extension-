@@ -15,14 +15,17 @@ The goal is simple: help people use the internet more intentionally without havi
 - **Multi-Website Support:** _(Planned)_ Expand beyond social media to other distracting platforms.
 - **Lightweight Design:** Focus on reducing distractions without unnecessarily complicating the browsing experience.
 
-_Features marked as planned are not yet implemented._
+_Features marked as planned are not yet  FULLY implemented._
 
 ## 📸 Screenshots
 
 _Screenshots and a demonstration GIF will be added as development progresses._
 
-<!-- Add screenshots here when available. -->
+<img width="315" height="592" alt="feed1" src="https://github.com/user-attachments/assets/2ec38a92-8504-4608-ac0b-d85d94a72a62" />
+<img width="1188" height="676" alt="feed2" src="https://github.com/user-attachments/assets/c3709179-093e-4315-9545-3f1c65affc09" />
+
 <!-- Example: ![Undistract in action](screenshots/undistract-demo.png) -->
+<img width="1362" height="675" alt="addictivefeed" src="https://github.com/user-attachments/assets/a2ce7be1-d620-4163-bc02-9e7561370fe6" />
 
 ## 💡 Why Undistract?
 
@@ -40,7 +43,6 @@ Instead of blocking an entire website, the goal is to let users keep the parts t
 - Chrome Extensions API
 - Chrome Manifest V3
 
-_Update this list as the project evolves._
 
 ## 🚀 Installation
 
