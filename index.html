@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Undistract V3</title>
+    <style>
+      :root {
+        --bg-color: #0f172a;
+        --card-bg: #1e293b;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --border: #334155;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+
+      body {
+        width: 320px;
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        padding: 16px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header h1 {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        color: var(--text-primary);
+      }
+
+      .section {
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+
+      .toggle-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        border: 1px solid var(--border);
+        transition: border-color 0.2s ease;
+      }
+
+      .toggle-card:hover {
+        border-color: var(--accent);
+      }
+
+      .toggle-label {
+        font-size: 13px;
+        color: var(--text-primary);
+        cursor: pointer;
+        user-select: none;
+        flex-grow: 1;
+        padding-right: 10px;
+      }
+
+      /* Modern iOS-style Toggle Switch */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 36px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #475569;
+        transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 20px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: '';
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: var(--accent);
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(16px);
+      }
+
+      #status {
+        font-size: 11px;
+        color: var(--text-secondary);
+        text-align: center;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Undistract V3</h1>
+    </div>
+
+    <!-- YouTube Section -->
+    <div class="section">
+      <a
+        href="whyalgorithmsaredangerous.html"
+        target="_blank"
+        style="
+          text-decoration: none;
+          color: var(--accent);
+          font-size: 11px;
+          display: block;
+          margin-bottom: 8px;
+        "
+        >Why Algorithms Are Dangerous</a
+      >
+      <div class="section-title">YouTube</div>
+
+      <div class="toggle-card">
+        <label for="toggleButton" class="toggle-label"
+          >Block Feed & Shorts</label
+        >
+        <label class="switch">
+          <input type="checkbox" id="toggleButton" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-card">
+        <label for="commentsToggle" class="toggle-label">Block Comments</label>
+        <label class="switch">
+          <input type="checkbox" id="commentsToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-card">
+        <label for="sidebarToggle" class="toggle-label">Block Sidebar</label>
+        <label class="switch">
+          <input type="checkbox" id="sidebarToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- TikTok Section -->
+    <div class="section">
+      <div class="section-title">TikTok</div>
+
+      <div class="toggle-card">
+        <label for="tiktokTogglefeed" class="toggle-label">Block Feed</label>
+        <label class="switch">
+          <input type="checkbox" id="tiktokTogglefeed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Other Platforms Section -->
+    <div class="section">
+      <div class="section-title">Other Platforms</div>
+
+      <div class="toggle-card">
+        <label for="redditTogglefeed" class="toggle-label"
+          >Block Reddit Feed</label
+        >
+        <label class="switch">
+          <input type="checkbox" id="redditTogglefeed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-card">
+        <label for="huluTogglefeed" class="toggle-label">Block Hulu Feed</label>
+        <label class="switch">
+          <input type="checkbox" id="huluTogglefeed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-card">
+        <label for="instagramTogglefeed" class="toggle-label"
+          >Block Instagram Feed</label
+        >
+        <label class="switch">
+          <input type="checkbox" id="instagramTogglefeed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-card">
+        <label for="xTogglefeed" class="toggle-label">Block X Feed</label>
+        <label class="switch">
+          <input type="checkbox" id="xTogglefeed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-card">
+        <label for="netflixTogglefeed" class="toggle-label"
+          >Block Netflix Feed</label
+        >
+        <label class="switch">
+          <input type="checkbox" id="netflixTogglefeed" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <p id="status"></p>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

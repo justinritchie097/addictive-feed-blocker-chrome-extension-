@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      The Architecture of Distraction: Understanding Algorithmic Harm
+    </title>
+    <style>
+      :root {
+        --bg: #090d16;
+        --card-bg: #121826;
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --accent: #38bdf8;
+        --accent-glow: rgba(56, 189, 248, 0.15);
+        --border: #1e293b;
+        --code-bg: #1a2234;
+        --max-width: 800px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg);
+        color: var(--text-main);
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+          Arial, sans-serif;
+        line-height: 1.7;
+        padding: 40px 20px;
+      }
+
+      .container {
+        max-width: var(--max-width);
+        margin: 0 auto;
+      }
+
+      header {
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tag {
+        display: inline-block;
+        background: var(--accent-glow);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+        color: #ffffff;
+      }
+
+      .subtitle {
+        font-size: 18px;
+        color: var(--text-muted);
+      }
+
+      section {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 28px;
+        margin-bottom: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      h2::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 20px;
+        background-color: var(--accent);
+        border-radius: 3px;
+      }
+
+      p {
+        margin-bottom: 16px;
+        color: var(--text-main);
+        font-size: 15px;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      ul {
+        margin: 12px 0 16px 20px;
+        color: var(--text-main);
+      }
+
+      li {
+        margin-bottom: 8px;
+        font-size: 15px;
+      }
+
+      .study-box {
+        background: var(--code-bg);
+        border-left: 3px solid var(--accent);
+        padding: 14px 16px;
+        border-radius: 0 8px 8px 0;
+        margin-top: 16px;
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .study-box strong {
+        color: var(--text-main);
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px dashed var(--accent);
+        transition: opacity 0.2s;
+      }
+
+      a:hover {
+        opacity: 0.8;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 13px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="tag">Neuroscience & Cognitive Research</div>
+        <h1>The Architecture of Distraction</h1>
+        <p class="subtitle">
+          An evidence-based overview of how engagement optimization algorithms
+          alter human behavior, attention spans, and mental health.
+        </p>
+      </header>
+
+      <main>
+        <section>
+          <h2>1. Variable-Ratio Reinforcement Schedules</h2>
+          <p>
+            Traditional media relies on predictable intervals (such as scheduled
+            TV broadcasting). In contrast, modern social networks and content
+            platforms use algorithmic feeds driven by machine learning models
+            designed to maximize engagement time.
+          </p>
+          <p>
+            By delivering high-value rewards (likes, entertaining videos, or
+            viral comments) at unpredictable frequencies, algorithms
+            successfully replicate the psychological mechanisms found in slot
+            machines. This constant uncertainty keeps dopamine firing at
+            elevated baseline rates, making voluntary disengagement extremely
+            difficult.
+          </p>
+          <div class="study-box">
+            <strong>Key Research:</strong> Lindström et al. (2021) demonstrated
+            using computational modeling that social reward learning rates
+            dictate posting latencies and platform retention. Read the paper in
+            <a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7910435/"
+              target="_blank"
+              rel="noopener"
+              >Nature Communications (PMC7910435)</a
+            >.
+          </div>
+        </section>
+
+        <section>
+          <h2>2. Elimination of Cognitive Stopping Cues</h2>
+          <p>
+            Human self-regulation depends heavily on environmental
+            boundaries—such as finishing a chapter in a book or reaching the end
+            credits of a film. These structural breakpoints give executive
+            function systems a chance to re-evaluate goals.
+          </p>
+          <p>
+            Algorithmic feeds incorporate <em>infinite scrolling</em> and
+            auto-playing media, stripping away all natural stopping cues.
+            Without a built-in exit point, users are forced to make a
+            deliberate, conscious decision to stop every few seconds, rapidly
+            exhausting cognitive control resources.
+          </p>
+          <div class="study-box">
+            <strong>Key Research:</strong> Systematic evaluations on digital
+            environments show that continuous multi-platform media engagement
+            directly correlates with diminished working memory and selective
+            attention. Explore the findings via
+            <a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12539155/"
+              target="_blank"
+              rel="noopener"
+              >PMC Cognitive Development Review (PMC12539155)</a
+            >.
+          </div>
+        </section>
+
+        <section>
+          <h2>3. Algorithmic Amplification of Negativity & Extremes</h2>
+          <p>
+            Recommendation algorithms optimize for metrics like watch time,
+            clicks, and emotional reactions. Because human evolutionary biology
+            prioritizes threat detection, emotionally charged, polarizing, or
+            sensational content naturally elicits higher engagement rates than
+            neutral content.
+          </p>
+          <p>
+            Consequently, automated systems frequently promote extremist
+            viewpoints or doomscrolling material, trapping users in feedback
+            loops that exacerbate anxiety, depression, and social division.
+          </p>
+          <div class="study-box">
+            <strong>Key Research:</strong> Studies analyzing the neurological
+            and psychological impact of recommendation models highlight how
+            algorithmic endorsement accelerates psychological distress. Read
+            more at the
+            <a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11804976/"
+              target="_blank"
+              rel="noopener"
+              >NIH PMC Social Media Algorithms and Teen Addiction Study
+              (PMC11804976)</a
+            >.
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          Compiled for digital well-being research &bull; Powered by
+          Evidence-Based Design
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
