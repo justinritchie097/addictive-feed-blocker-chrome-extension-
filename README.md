@@ -1,8 +1,8 @@
-# Undistract 🧠
+# Scrollshield 🧠
 
 **Take back control of your browsing experience.**
 
-Undistract is a Chrome extension designed to reduce digital distractions by hiding selected website elements associated with endless scrolling, algorithmic feeds, and other attention-grabbing features.
+Scrollshield is a Chrome extension designed to reduce digital distractions by hiding selected website elements associated with endless scrolling, algorithmic feeds, and other attention-grabbing features.
 
 The goal is simple: help people use the internet more intentionally without having to give up the websites they enjoy.
 
@@ -21,19 +21,28 @@ _Features marked as planned are not yet  FULLY implemented._
 
 _Screenshots and a demonstration GIF will be added as development progresses._
 
+NOTE: These images and gifs are currently outdated and dont show the current changes made. I will update these images and gifs when I have the chance. Thank you.
+
+
 <img width="315" height="592" alt="feed1" src="https://github.com/user-attachments/assets/2ec38a92-8504-4608-ac0b-d85d94a72a62" />
 <img width="1188" height="676" alt="feed2" src="https://github.com/user-attachments/assets/c3709179-093e-4315-9545-3f1c65affc09" />
 
 <!-- Example: ![Undistract in action](screenshots/undistract-demo.png) -->
 <img width="1362" height="675" alt="addictivefeed" src="https://github.com/user-attachments/assets/a2ce7be1-d620-4163-bc02-9e7561370fe6" />
 
-## 💡 Why Undistract?
+## 💡 Why Scrollshield?
 
 Many websites are designed to keep users engaged for as long as possible through endless feeds, recommendations, and other attention-grabbing features.
 
-Undistract explores a different approach: **make the websites you use less distracting, rather than relying entirely on willpower to avoid distractions.**
+Scrollshield explores a different approach: **make the websites you use less distracting, rather than relying entirely on willpower to avoid distractions.**
 
 Instead of blocking an entire website, the goal is to let users keep the parts they find useful while removing the features they find distracting.
+
+A new feature has been added where you can now block specific words, and if the words are on the preceding web page, a warning message will appear, asking if the user would like to continue.
+
+## Potential Bugs
+
+Please let me know if there are any improvements you feel could be made. Im new to this, and its possible an unnoticed bug could have slipped through while building this. You can contact me on linkedin, or github, or even my email. All socials are in my profile README.
 
 ## 🛠️ Built With
 
