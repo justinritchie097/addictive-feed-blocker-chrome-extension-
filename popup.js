@@ -1,7 +1,7 @@
 const feedToggle = document.getElementById('toggleButton');
 const commentsToggle = document.getElementById('commentsToggle');
 const sidebarToggle = document.getElementById('sidebarToggle');
-
+const killSwitch = document.getElementById('killSwitch');
 const tiktokfeed = document.getElementById('tiktokTogglefeed');
 const redditfeed = document.getElementById('redditTogglefeed');
 const hulufeed = document.getElementById('huluTogglefeed');
@@ -9,8 +9,27 @@ const igfeed = document.getElementById('instagramTogglefeed');
 const xfeed = document.getElementById('xTogglefeed');
 const netflixfeed = document.getElementById('netflixTogglefeed');
 
-// 1. When popup opens, pull all saved states independently
+// Helper to update the kill switch button appearance dynamically
+function updateButtonUI(button, isDisabled) {
+  if (isDisabled) {
+    button.textContent = 'Turn Extension Back On';
+    button.style.backgroundColor = '#16a34a'; // Green when disabled
+  } else {
+    button.textContent = 'Turn Off Everything';
+    button.style.backgroundColor = '#dc2626'; // Red when active
+  }
+}
+
+// 1. When popup opens, pull all saved states and initialize UI
 document.addEventListener('DOMContentLoaded', async () => {
+  // Check kill switch state first
+  const localData = await chrome.storage.local.get(['extensionDisabled']);
+  const isDisabled = !!localData.extensionDisabled;
+  if (killSwitch) {
+    updateButtonUI(killSwitch, isDisabled);
+  }
+
+  // Pull feature settings
   const settings = await chrome.storage.sync.get({
     feed: false,
     comments: false,
@@ -97,3 +116,138 @@ if (netflixfeed)
   netflixfeed.addEventListener('change', (e) =>
     handleToggleChange('netflixfeed', e.target.checked),
   );
+
+const addBtn = document.getElementById('addBtn');
+if (addBtn) {
+  addBtn.addEventListener('click', () => {
+    const input = document.getElementById('termInput');
+    const term = input.value.trim();
+    if (!term) return;
+
+    chrome.storage.local.get(['blockedTerms'], (data) => {
+      const terms = data.blockedTerms || [];
+      if (!terms.includes(term)) {
+        terms.push(term);
+        chrome.storage.local.set({ blockedTerms: terms }, () => {
+          input.value = '';
+          loadTerms();
+        });
+      }
+    });
+  });
+}
+
+function loadTerms() {
+  chrome.storage.local.get(['blockedTerms'], (data) => {
+    const terms = data.blockedTerms || [];
+    const list = document.getElementById('termList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    terms.forEach((t, index) => {
+      const li = document.createElement('li');
+      li.textContent = t;
+
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '×';
+      delBtn.className = 'delete-btn';
+      delBtn.onclick = () => {
+        terms.splice(index, 1);
+        chrome.storage.local.set({ blockedTerms: terms }, loadTerms);
+      };
+
+      li.appendChild(delBtn);
+      list.appendChild(li);
+    });
+  });
+}
+
+loadTerms();
+
+// 4. Kill Switch Action
+if (killSwitch) {
+  killSwitch.addEventListener('click', async () => {
+    // 4. Kill Switch Action with State Backup & Restore
+    if (killSwitch) {
+      killSwitch.addEventListener('click', async () => {
+        const data = await chrome.storage.local.get(['extensionDisabled']);
+        const currentlyDisabled = !!data.extensionDisabled;
+        const newDisabledState = !currentlyDisabled;
+
+        const defaultSettings = {
+          feed: false,
+          comments: false,
+          sidebar: false,
+          tiktokfeed: false,
+          redditfeed: false,
+          hulufeed: false,
+          igfeed: false,
+          xfeed: false,
+          netflixfeed: false,
+        };
+
+        if (newDisabledState) {
+          // Turning OFF: Save current settings as a backup before clearing them
+          const currentSettings =
+            await chrome.storage.sync.get(defaultSettings);
+          await chrome.storage.local.set({
+            extensionDisabled: true,
+            previousSettings: currentSettings,
+          });
+
+          // Clear sync settings and uncheck UI boxes
+          await chrome.storage.sync.set(defaultSettings);
+          [
+            feedToggle,
+            commentsToggle,
+            sidebarToggle,
+            tiktokfeed,
+            redditfeed,
+            hulufeed,
+            igfeed,
+            xfeed,
+            netflixfeed,
+          ].forEach((el) => {
+            if (el) el.checked = false;
+          });
+        } else {
+          // Turning ON: Restore the previous settings backup if it exists
+          const localData = await chrome.storage.local.get([
+            'previousSettings',
+          ]);
+          const restoredSettings =
+            localData.previousSettings || defaultSettings;
+
+          await chrome.storage.local.set({ extensionDisabled: false });
+          await chrome.storage.sync.set(restoredSettings);
+
+          // Restore UI checkboxes visually to match
+          if (feedToggle) feedToggle.checked = restoredSettings.feed;
+          if (commentsToggle)
+            commentsToggle.checked = restoredSettings.comments;
+          if (sidebarToggle) sidebarToggle.checked = restoredSettings.sidebar;
+          if (tiktokfeed) tiktokfeed.checked = restoredSettings.tiktokfeed;
+          if (redditfeed) redditfeed.checked = restoredSettings.redditfeed;
+          if (hulufeed) hulufeed.checked = restoredSettings.hulufeed;
+          if (igfeed) igfeed.checked = restoredSettings.igfeed;
+          if (xfeed) xfeed.checked = restoredSettings.xfeed;
+          if (netflixfeed) netflixfeed.checked = restoredSettings.netflixfeed;
+        }
+
+        updateButtonUI(killSwitch, newDisabledState);
+
+        // Notify the active tab's content script
+        const [tab] = await chrome.tabs.query({
+          active: true,
+          currentWindow: true,
+        });
+        if (tab?.id) {
+          const actionType = newDisabledState ? 'HALT_ALL' : 'RESUME_ALL';
+          chrome.tabs
+            .sendMessage(tab.id, { action: actionType })
+            .catch(() => {});
+        }
+      });
+    }
+  });
+}

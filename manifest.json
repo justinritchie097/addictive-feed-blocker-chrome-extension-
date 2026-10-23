@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Undistract",
-  "version": "1.0.0",
-  "description": "Dont let the algorithms win.",
+  "name": "ScrollShield",
+  "version": "1.1.0",
+  "description": "Block distracting feeds and certain things (or words) you dont want to see on the web",
 
   "action": {
     "default_popup": "index.html"
   },
+  "host_permissions": ["http://*/*", "https://*/*"],
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -15,15 +16,7 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.youtube.com/*",
-        "https://www.tiktok.com/*",
-        "https://www.reddit.com/*",
-        "https://www.hulu.com/*",
-        "https://www.instagram.com/*",
-        "https://x.com/*",
-        "*://*.netflix.com/*"
-      ],
+      "matches": ["http://*/*", "https://*/*"],
       "js": ["content.js"],
       "run_at": "document_start",
       "all_frames": true
