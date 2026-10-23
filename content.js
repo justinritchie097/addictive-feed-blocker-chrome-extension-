@@ -29,8 +29,7 @@ function matchesUrl(featureKey) {
           (pathname === '/' ||
             pathname.includes('/foryou') ||
             pathname.includes('/explore'))) ||
-        pathname.includes('/en/') ||
-        pathname.includes('')
+        pathname.includes('/en/')
       );
 
     case 'feed':

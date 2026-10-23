@@ -164,90 +164,77 @@ function loadTerms() {
 
 loadTerms();
 
-// 4. Kill Switch Action
 if (killSwitch) {
   killSwitch.addEventListener('click', async () => {
-    // 4. Kill Switch Action with State Backup & Restore
-    if (killSwitch) {
-      killSwitch.addEventListener('click', async () => {
-        const data = await chrome.storage.local.get(['extensionDisabled']);
-        const currentlyDisabled = !!data.extensionDisabled;
-        const newDisabledState = !currentlyDisabled;
+    const data = await chrome.storage.local.get(['extensionDisabled']);
+    const currentlyDisabled = !!data.extensionDisabled;
+    const newDisabledState = !currentlyDisabled;
 
-        const defaultSettings = {
-          feed: false,
-          comments: false,
-          sidebar: false,
-          tiktokfeed: false,
-          redditfeed: false,
-          hulufeed: false,
-          igfeed: false,
-          xfeed: false,
-          netflixfeed: false,
-        };
+    const defaultSettings = {
+      feed: false,
+      comments: false,
+      sidebar: false,
+      tiktokfeed: false,
+      redditfeed: false,
+      hulufeed: false,
+      igfeed: false,
+      xfeed: false,
+      netflixfeed: false,
+    };
 
-        if (newDisabledState) {
-          // Turning OFF: Save current settings as a backup before clearing them
-          const currentSettings =
-            await chrome.storage.sync.get(defaultSettings);
-          await chrome.storage.local.set({
-            extensionDisabled: true,
-            previousSettings: currentSettings,
-          });
-
-          // Clear sync settings and uncheck UI boxes
-          await chrome.storage.sync.set(defaultSettings);
-          [
-            feedToggle,
-            commentsToggle,
-            sidebarToggle,
-            tiktokfeed,
-            redditfeed,
-            hulufeed,
-            igfeed,
-            xfeed,
-            netflixfeed,
-          ].forEach((el) => {
-            if (el) el.checked = false;
-          });
-        } else {
-          // Turning ON: Restore the previous settings backup if it exists
-          const localData = await chrome.storage.local.get([
-            'previousSettings',
-          ]);
-          const restoredSettings =
-            localData.previousSettings || defaultSettings;
-
-          await chrome.storage.local.set({ extensionDisabled: false });
-          await chrome.storage.sync.set(restoredSettings);
-
-          // Restore UI checkboxes visually to match
-          if (feedToggle) feedToggle.checked = restoredSettings.feed;
-          if (commentsToggle)
-            commentsToggle.checked = restoredSettings.comments;
-          if (sidebarToggle) sidebarToggle.checked = restoredSettings.sidebar;
-          if (tiktokfeed) tiktokfeed.checked = restoredSettings.tiktokfeed;
-          if (redditfeed) redditfeed.checked = restoredSettings.redditfeed;
-          if (hulufeed) hulufeed.checked = restoredSettings.hulufeed;
-          if (igfeed) igfeed.checked = restoredSettings.igfeed;
-          if (xfeed) xfeed.checked = restoredSettings.xfeed;
-          if (netflixfeed) netflixfeed.checked = restoredSettings.netflixfeed;
-        }
-
-        updateButtonUI(killSwitch, newDisabledState);
-
-        // Notify the active tab's content script
-        const [tab] = await chrome.tabs.query({
-          active: true,
-          currentWindow: true,
-        });
-        if (tab?.id) {
-          const actionType = newDisabledState ? 'HALT_ALL' : 'RESUME_ALL';
-          chrome.tabs
-            .sendMessage(tab.id, { action: actionType })
-            .catch(() => {});
-        }
+    if (newDisabledState) {
+      // Turning OFF: Save current settings as a backup before clearing them
+      const currentSettings = await chrome.storage.sync.get(defaultSettings);
+      await chrome.storage.local.set({
+        extensionDisabled: true,
+        previousSettings: currentSettings,
       });
+
+      // Clear sync settings and uncheck UI boxes
+      await chrome.storage.sync.set(defaultSettings);
+      [
+        feedToggle,
+        commentsToggle,
+        sidebarToggle,
+        tiktokfeed,
+        redditfeed,
+        hulufeed,
+        igfeed,
+        xfeed,
+        netflixfeed,
+      ].forEach((el) => {
+        if (el) el.checked = false;
+      });
+    } else {
+      // Turning ON: Restore the previous settings backup if it exists
+      const localData = await chrome.storage.local.get(['previousSettings']);
+      const restoredSettings = localData.previousSettings || defaultSettings;
+
+      await chrome.storage.local.set({ extensionDisabled: false });
+      await chrome.storage.sync.set(restoredSettings);
+
+      // Restore UI checkboxes visually to match
+      if (feedToggle) feedToggle.checked = restoredSettings.feed;
+      if (commentsToggle) commentsToggle.checked = restoredSettings.comments;
+      if (sidebarToggle) sidebarToggle.checked = restoredSettings.sidebar;
+      if (tiktokfeed) tiktokfeed.checked = restoredSettings.tiktokfeed;
+      if (redditfeed) redditfeed.checked = restoredSettings.redditfeed;
+      if (hulufeed) hulufeed.checked = restoredSettings.hulufeed;
+      if (igfeed) igfeed.checked = restoredSettings.igfeed;
+      if (xfeed) xfeed.checked = restoredSettings.xfeed;
+      if (netflixfeed) netflixfeed.checked = restoredSettings.netflixfeed;
+    }
+
+    updateButtonUI(killSwitch, newDisabledState);
+
+    // Notify the active tab's content script
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    if (tab?.id) {
+      const actionType = newDisabledState ? 'HALT_ALL' : 'RESUME_ALL';
+      chrome.tabs.sendMessage(tab.id, { action: actionType }).catch(() => {});
     }
   });
 }
