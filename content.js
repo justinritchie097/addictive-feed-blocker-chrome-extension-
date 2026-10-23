@@ -25,11 +25,11 @@ function matchesUrl(featureKey) {
   switch (featureKey) {
     case 'tiktokfeed':
       return (
-        (hostname.includes('tiktok.com') &&
-          (pathname === '/' ||
-            pathname.includes('/foryou') ||
-            pathname.includes('/explore'))) ||
-        pathname.includes('/en/')
+        hostname.includes('tiktok.com') &&
+        (pathname === '/' ||
+          pathname.includes('/foryou') ||
+          pathname.includes('/explore') ||
+          pathname.includes('/en/'))
       );
 
     case 'feed':
