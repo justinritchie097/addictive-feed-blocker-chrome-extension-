@@ -21,7 +21,7 @@ The goal is simple: help people use the internet more intentionally without havi
 
 _Screenshots and a demonstration GIF will be added as development progresses._
 
-NOTE: These images and gifs are currently outdated and dont show the current changes made. I will update these images and gifs when I have the chance. Thank you.
+
 
 
 <img width="323" height="596" alt="scrollshield" src="https://github.com/user-attachments/assets/183f5046-7fcf-4ae0-b72e-2e3ee371e83c" />
