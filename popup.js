@@ -1,3 +1,4 @@
+//these are all of the buttons and their values being grabbed
 const feedToggle = document.getElementById('toggleButton');
 const commentsToggle = document.getElementById('commentsToggle');
 const sidebarToggle = document.getElementById('sidebarToggle');
@@ -8,7 +9,16 @@ const hulufeed = document.getElementById('huluTogglefeed');
 const igfeed = document.getElementById('instagramTogglefeed');
 const xfeed = document.getElementById('xTogglefeed');
 const netflixfeed = document.getElementById('netflixTogglefeed');
+// Initialize button state from storage
+chrome.storage.local.get(['isBlockingEnabled'], (result) => {
+  feedToggle.checked = result.isBlockingEnabled === true;
+});
 
+// Save state when user clicks
+feedToggle.addEventListener('change', (e) => {
+  const isEnabled = e.target.checked;
+  chrome.storage.local.set({ isBlockingEnabled: isEnabled });
+});
 // Helper to update the kill switch button appearance dynamically
 function updateButtonUI(button, isDisabled) {
   if (isDisabled) {
@@ -55,28 +65,57 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // 2. Helper function to handle toggle changes
+
 async function handleToggleChange(settingKey, isChecked) {
-  await chrome.storage.sync.set({ [settingKey]: isChecked });
+  try {
+    // Save the user's selection.
+    await chrome.storage.sync.set({
+      [settingKey]: isChecked,
+    });
 
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab || !tab.id) return;
-  if (tab.url && tab.url.startsWith('chrome://')) return;
+    // Find the active tab.
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
 
-  chrome.tabs.sendMessage(
-    tab.id,
-    {
-      action: 'toggleVisibility',
-      setting: settingKey,
-      value: isChecked,
-    },
-    (response) => {
-      if (chrome.runtime.lastError) return;
-      if (response && response.action === 'Success') {
+    if (
+      !tab?.id ||
+      !tab.url ||
+      tab.url.startsWith('chrome://') ||
+      tab.url.startsWith('chrome-extension://')
+    ) {
+      return;
+    }
+
+    // Notify the content script as an immediate update.
+    chrome.tabs.sendMessage(
+      tab.id,
+      {
+        action: 'toggleVisibility',
+        setting: settingKey,
+        value: isChecked,
+      },
+      (response) => {
+        if (chrome.runtime.lastError) {
+          // Storage was saved; the content script may not be available
+          // in this tab. Check the page and extension reload state.
+          console.debug(
+            'Content script message:',
+            chrome.runtime.lastError.message,
+          );
+          return;
+        }
+
         const statusEl = document.getElementById('status');
-        if (statusEl) statusEl.innerText = response.determinant;
-      }
-    },
-  );
+        if (statusEl && response?.action === 'Success') {
+          statusEl.textContent = response.determinant;
+        }
+      },
+    );
+  } catch (error) {
+    console.error('Could not update feed setting:', error);
+  }
 }
 
 // 3. Attach independent listeners safely
@@ -238,3 +277,53 @@ if (killSwitch) {
     }
   });
 }
+document.addEventListener('DOMContentLoaded', async () => {
+  const listElement = document.getElementById('term-list');
+
+  // Fetch current dismissed terms from storage
+  const data = await chrome.storage.local.get(['chrome_blocker_dismissed']);
+  const terms = data.chrome_blocker_dismissed || [];
+
+  if (terms.length === 0) {
+    listElement.innerHTML = '<li class="empty">No ignored keywords found.</li>';
+    return;
+  }
+
+  // Render each term
+  terms.forEach((term) => {
+    const li = document.createElement('li');
+    li.textContent = term;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove from the ignored list';
+    removeBtn.onclick = async () => {
+      // Filter out the selected term
+      const updatedTerms = terms.filter((t) => t !== term);
+
+      // Save back to chrome.storage
+      await chrome.storage.local.set({
+        chrome_blocker_dismissed: updatedTerms,
+      });
+
+      // Remove item from UI
+      li.remove();
+
+      if (updatedTerms.length === 0) {
+        listElement.innerHTML =
+          '<li class="empty">No ignored keywords found.</li>';
+      }
+    };
+
+    li.appendChild(removeBtn);
+    listElement.appendChild(li);
+  });
+});
+
+document.getElementById('clear-all').onclick = async () => {
+  // Clear storage
+  await chrome.storage.local.set({ chrome_blocker_dismissed: [] });
+
+  // Clear UI list
+  const listElement = document.getElementById('term-list');
+  listElement.innerHTML = '<li class="empty">No ignored keywords found.</li>';
+};
