@@ -11,11 +11,11 @@ The goal is simple: help people use the internet more intentionally without havi
 ## ✨ Features
 
 - **Feed Blocking:** Hide selected social media feed elements to reduce mindless scrolling.
-- **Customizable Distractions:** _(Planned)_ Choose which website elements you want to hide.
-- **Multi-Website Support:** _(Planned)_ Expand beyond social media to other distracting platforms.
+- **Customizable Distractions:**  Choose which website elements you want to hide.
+- **Multi-Website Support:**  Expand beyond social media to other distracting platforms.
 - **Lightweight Design:** Focus on reducing distractions without unnecessarily complicating the browsing experience.
+- **Word Blocker:** A word blocker has been added that allows users to avoid sites that contain said word
 
-_Features marked as planned are not yet  FULLY implemented._
 
 ## 📸 Screenshots
 
@@ -24,9 +24,11 @@ _Screenshots and a demonstration GIF will be added as development progresses._
 NOTE: These images and gifs are currently outdated and dont show the current changes made. I will update these images and gifs when I have the chance. Thank you.
 
 
-<img width="315" height="592" alt="feed1" src="https://github.com/user-attachments/assets/2ec38a92-8504-4608-ac0b-d85d94a72a62" />
-<img width="1188" height="676" alt="feed2" src="https://github.com/user-attachments/assets/c3709179-093e-4315-9545-3f1c65affc09" />
+<img width="323" height="596" alt="scrollshield" src="https://github.com/user-attachments/assets/183f5046-7fcf-4ae0-b72e-2e3ee371e83c" />
 
+<img width="1353" height="632" alt="scrollshield2" src="https://github.com/user-attachments/assets/fcf0b488-475c-4953-8d33-ef21e39448e5" />
+
+An updated gif is coming soon with the recent changes implemented.
 <!-- Example: ![Undistract in action](screenshots/undistract-demo.png) -->
 <img width="1362" height="675" alt="addictivefeed" src="https://github.com/user-attachments/assets/a2ce7be1-d620-4163-bc02-9e7561370fe6" />
 
